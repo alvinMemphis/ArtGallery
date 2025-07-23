@@ -10,11 +10,11 @@ import { v4 as uuidv4 } from 'uuid';
 export default function UploadForm() {
   const [title, setTitle] = useState('');
   const [tags, setTags] = useState('');
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleUpload = async (e: React.FormEvent) => {
+  const handleUpload = async (e) => {
     e.preventDefault();
     if (!file) return;
 
