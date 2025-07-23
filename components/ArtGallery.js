@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import ScrollLock from "react-scrolllock";
-import firebase from "../Firebase/firebase";
+import firebase from "../src/Firebase/firebase";
 
 import { Nav } from "./Nav/Nav";
 import { Gallery } from "./Gallery/Gallery";

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./zoom-card-item.css";
-import firebase from "../../Firebase/firebase";
+import firebase from "../../src/Firebase/firebase";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 export const ZoomCardItem = (props) => {
