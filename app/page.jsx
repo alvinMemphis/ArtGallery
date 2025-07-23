@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { FiInstagram, FiLinkedin, FiMail, FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
+import FeaturedArt from '../components/featured_art';
 
 const navItems = [
   { name: 'Gallery', href: '/gallery' },
@@ -35,6 +36,7 @@ export default function Hero() {
   };
 
   return (
+    <>
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-gray-950">
       {/* Mobile Nav Toggle */}
       <button 
@@ -115,7 +117,7 @@ export default function Hero() {
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
                 <span className="block">Hi, I&apos;m</span>
                 <span className="bg-gradient-to-r from-pink-500 to-yellow-500 bg-clip-text text-transparent">
-                Okao Edwin
+                Eddy Okao M
                 </span>
               </h1>
               <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl">
@@ -147,7 +149,7 @@ export default function Hero() {
           <div className="lg:w-1/2 flex justify-center mt-12 lg:mt-0">
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.4 }} className="relative">
               <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden border-4 border-white dark:border-gray-900 shadow-2xl">
-                <Image src="/portImage.jpg" alt="Alvin Nsongambi" fill className="object-cover" priority />
+                <Image src="/portImage.jpg" alt="Okao" fill className="object-cover" priority />
               </div>
               <motion.div animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} className="absolute -top-6 -left-6 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
                 <span className="text-xs font-medium">Painter</span>
@@ -181,5 +183,7 @@ export default function Hero() {
         }
       `}</style>
     </section>
+    <FeaturedArt />
+    </>
   );
 }

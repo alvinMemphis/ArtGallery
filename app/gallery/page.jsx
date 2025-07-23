@@ -2,11 +2,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import ScrollLock from 'react-scrolllock';
 
-import firebase from '../../firebase/firebase';
 import { FloatingArrow } from '../../components/FloatingArrow/FloatingArrow';
 import { ZoomCardItem } from '../../components/ZoomCardItem/ZoomCardItem';
 import { Gallery } from '../../components/Gallery/Gallery';
 import { Nav } from '../../components/Nav/Nav';
+import { db } from '../../firebase/firebase';
+import { ref,get,child } from 'firebase/database';
 
 export default function GalleryPage() {
   const [lock, setLock] = useState(false);
@@ -27,20 +28,21 @@ export default function GalleryPage() {
     setSearch(tag.toLowerCase());
   }, []);
 
-  const receiveCardDetails = useCallback((cardData) => {
-    const cardId = cardData.id;
-    firebase
-      .database()
-      .ref('/Cards/' + cardId)
-      .once('value', (snapshot) => {
-        const data = snapshot.val() || {};
-        setCard({ ...data });
-        setLock(true);
-      });
-  }, []);
+
+const receiveCardDetails = useCallback((cardData) => {
+  const cardId = cardData.id;
+  const cardRef = child(ref(db), 'Cards/' + cardId);
+
+  get(cardRef).then((snapshot) => {
+    const data = snapshot.val() || {};
+    setCard({ ...data });
+    setLock(true);
+  });
+}, []);
+ 
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-800 dark:text-gray-200 relative">
+    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-800 dark:text-gray-200 pt-10 relative">
       <Nav search={search} handleNavSearch={receiveNavSearchText} />
 
       <main className={`pt-24 ${lock ? 'pointer-events-none overflow-hidden' : ''}`}>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./zoom-card-item.css";
-import firebase from "../../src/Firebase/firebase";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { db } from "../../firebase/firebase";
+import { ref, update } from "firebase/database";
 
 export const ZoomCardItem = (props) => {
   const card = props.card;
@@ -124,23 +125,23 @@ function Like(props) {
     setLikeCounter(parseInt(props.card.likes, 10));
   }, [props]);
 
-  function updateLikeDB() {
-    var updates = {};
-    updates["/Cards/" + card.id + "/likes"] = likeCounter + 1;
-    firebase
-      .database()
-      .ref()
-      .update(updates, function (error) {
-        if (error) {
-          return false;
-        } else {
-          // Data saved successfully, update the view of the likes counter
-          setLikeClassName(!likeClassName);
-          setLikeCounter(likeCounter + 1);
-          return true;
-        }
-      });
-  }
+function updateLikeDB() {
+  const updates = {};
+  updates[`/Cards/${card.id}/likes`] = likeCounter + 1;
+
+  const dbRef = ref(db);
+
+  update(dbRef, updates)
+    .then(() => {
+      // Data saved successfully, update the view of the likes counter
+      setLikeClassName(!likeClassName);
+      setLikeCounter(likeCounter + 1);
+    })
+    .catch((error) => {
+      console.error("Failed to update likes:", error);
+    });
+}
+ 
 
   return (
     <div className="like-container">

@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./gallery.css";
-import firebase from "../../src/Firebase/firebase"
 import { CardItem } from "../CardItem/CardItem";
+
+import { ref, get } from 'firebase/database';
+import { db } from "../../firebase/firebase";
 
 export const Gallery = props => {
   // State using for extractig cards data from DB
@@ -19,22 +21,21 @@ export const Gallery = props => {
     [] 
   );
 
-  useEffect(
-    () => {
-      // DB Request, extract all the data from Firebase
-      firebase
-        .database()
-        .ref("Cards")
-        .once("value", querySnapShot => {
-          let data = querySnapShot.val() ? querySnapShot.val() : {};
-          let dataJSON = { ...data };
 
-          // Initialize the state with all the data recieved from DB
-          setCardItemsData(dataJSON);
-        });
-    },
-    [] // Occurs when the state within is changing (once)
-  );
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const snapshot = await get(ref(db, 'Cards'));
+      const data = snapshot.exists() ? snapshot.val() : {};
+      setCardItemsData({ ...data });
+    } catch (error) {
+      console.error('Error fetching data from Firebase:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
 
   let cardItemsList = createCardItemsList(
     props.search,
